@@ -1,5 +1,5 @@
 // Configuration
-const API_BASE_URL = 'http://localhost:3000/api/public'; // À modifier pour la production
+const API_BASE_URL = 'https://attestation-ai-expotech.vercel.app/api/public'; // À modifier pour la production
 let currentStep = 1;
 let verifiedCode = null;
 let participantNom = null;

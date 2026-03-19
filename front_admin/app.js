@@ -1,5 +1,5 @@
 // Configuration
-const API_BASE_URL = 'http://localhost:3000/api'; // À modifier selon votre configuration
+const API_BASE_URL = 'https://attestation-ai-expotech.vercel.app/api'; // À modifier selon votre configuration
 let currentToken = localStorage.getItem('adminToken');
 let currentPage = 1;
 let itemsPerPage = 25;
