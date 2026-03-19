@@ -15,10 +15,10 @@ connectDB();
 
 // Middleware
 app.use(cors({
-  origin: '*',
-  credentials: true
+  origin: ["https://admin-ai-expotech.netlify.app/", "https://attestation-ai-expotech.netlify.app/","*"], 
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
