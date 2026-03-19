@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI ExpoTech - Téléchargement attestation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="public-style.css">
+</head>
+<body>
+    <!-- Particle Background -->
+    <div class="particles"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span>AI</span>
+                </div>
+                <h1>AI ExpoTech</h1>
+                <p class="subtitle">par le Club d'Intelligence Artificielle</p>
+            </div>
+            <div class="header-decoration">
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+            </div>
+        </header>
+
+        <!-- Main Card -->
+        <div class="main-card">
+            <!-- Progress Bar -->
+            <div class="progress-bar">
+                <div class="progress-step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Code</div>
+                </div>
+                <div class="progress-line"></div>
+                <div class="progress-step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Informations</div>
+                </div>
+                <div class="progress-line"></div>
+                <div class="progress-step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Attestation</div>
+                </div>
+            </div>
+
+            <!-- Step 1: Code Verification -->
+            <div id="step1" class="step active">
+                <div class="step-header">
+                    <i class="fas fa-qrcode"></i>
+                    <h2>Vérification du code</h2>
+                </div>
+                <p class="step-description">
+                    Entrez votre code secret à 6 caractères (format: IA-XXXXXX) pour commencer.
+                </p>
+                
+                <form id="codeForm" class="code-form">
+                    <div class="input-group">
+                        <div class="input-icon">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <input 
+                            type="text" 
+                            id="code" 
+                            class="code-input" 
+                            placeholder="IA-XXXXXX"
+                            pattern="IA-[A-Z0-9]{6}"
+                            title="Format: IA-XXXXXX (ex: IA-X7F9B2)"
+                            autocomplete="off"
+                            required
+                        >
+                        <button type="button" class="input-clear" id="clearCode">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="code-example">
+                        Exemple: <span class="highlight">IA-X7F9B2</span>
+                    </div>
+                    
+                    <div id="codeInfo" class="code-info" style="display: none;">
+                        <i class="fas fa-info-circle"></i>
+                        <span id="codeInfoMessage"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="verifyCodeBtn">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Vérifier mon code</span>
+                    </button>
+                </form>
+
+                <div class="help-text">
+                    <i class="fas fa-question-circle"></i>
+                    <p>Vous avez reçu ce code par email ou sur place lors de l'événement.</p>
+                </div>
+            </div>
+
+            <!-- Step 2: Personal Information -->
+            <div id="step2" class="step">
+                <div class="step-header">
+                    <i class="fas fa-user-edit"></i>
+                    <h2>Vos informations</h2>
+                </div>
+                <p class="step-description" id="participantWelcome">
+                    Bonjour <span id="participantName" class="highlight"></span>, veuillez compléter vos informations.
+                </p>
+
+                <form id="infoForm" class="info-form">
+                    <input type="hidden" id="verifiedCode">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nom">
+                                <i class="fas fa-user"></i>
+                                Prénom <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="nom" 
+                                class="form-control" 
+                                placeholder="Dupont"
+                                minlength="2"
+                                required
+                            >
+                            <div class="error-message" id="nomError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="prenom">
+                                <i class="fas fa-user"></i>
+                                Nom <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="prenom" 
+                                class="form-control" 
+                                placeholder="Jean"
+                                minlength="2"
+                                required
+                            >
+                            <div class="error-message" id="prenomError"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="telephone">
+                                <i class="fas fa-phone"></i>
+                                Téléphone <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="tel" 
+                                id="telephone" 
+                                class="form-control" 
+                                placeholder="0612345678"
+                                minlength="8"
+                                required
+                            >
+                            <div class="error-message" id="telephoneError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">
+                                <i class="fas fa-envelope"></i>
+                                Email (optionnel)
+                            </label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                class="form-control" 
+                                placeholder="jean.dupont@email.com"
+                            >
+                            <div class="error-message" id="emailError"></div>
+                        </div>
+                    </div>
+
+                    <!-- Rating Section -->
+                    <div class="rating-section">
+                        <label>
+                            <i class="fas fa-star"></i>
+                            Notez l'événement <span class="required">*</span>
+                        </label>
+                        <div class="rating-container">
+                            <div class="rating-stars">
+                                <input type="radio" name="rating" id="star1" value="5">
+                                <label for="star1" class="star"><i class="fas fa-star"></i></label>
+                                <input type="radio" name="rating" id="star2" value="4">
+                                <label for="star2" class="star"><i class="fas fa-star"></i></label>
+                                <input type="radio" name="rating" id="star3" value="3">
+                                <label for="star3" class="star"><i class="fas fa-star"></i></label>
+                                <input type="radio" name="rating" id="star4" value="2">
+                                <label for="star4" class="star"><i class="fas fa-star"></i></label>
+                                <input type="radio" name="rating" id="star5" value="1" >
+                                <label for="star5" class="star"><i class="fas fa-star"></i></label>
+                            </div>
+                        </div>
+                        <div class="error-message" id="ratingError"></div>
+                    </div>
+
+                    <!-- Comment -->
+                    <div class="form-group">
+                        <label for="commentaire">
+                            <i class="fas fa-comment"></i>
+                            Commentaire (optionnel)
+                        </label>
+                        <textarea 
+                            id="commentaire" 
+                            class="form-control" 
+                            rows="3"
+                            placeholder="Partagez votre expérience..."
+                            maxlength="1000"
+                        ></textarea>
+                        <div class="char-counter">
+                            <span id="charCount">0</span>/1000
+                        </div>
+                        <div class="error-message" id="commentaireError"></div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="goToStep(1)">
+                            <i class="fas fa-arrow-left"></i>
+                            Retour
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="submitInfoBtn">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>Générer mon attestation</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Step 3: Success & Download -->
+            <div id="step3" class="step">
+                <div class="success-animation">
+                    <div class="success-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                
+                <h2 class="success-title">Attestation générée !</h2>
+                <p class="success-message">
+                    Votre attestation de participation à AI ExpoTech est prête.
+                </p>
+
+                <div class="download-card">
+                    <i class="fas fa-file-pdf download-icon"></i>
+                    <div class="download-info">
+                        <h3>attestation-<span id="downloadCode"></span>.pdf</h3>
+                        <p>Cliquez sur le bouton ci-dessous pour télécharger</p>
+                    </div>
+                </div>
+
+                <div class="download-actions">
+                    <a id="downloadLink" class="btn btn-success" download>
+                        <i class="fas fa-download"></i>
+                        Télécharger mon attestation
+                    </a>
+                    <button onclick="resetToStart()" class="btn btn-secondary">
+                        <i class="fas fa-redo"></i>
+                        Nouveau code
+                    </button>
+                </div>
+
+                <div class="warning-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Ce code ne pourra plus être utilisé. Conservez précieusement votre attestation.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2024 Club d'Intelligence Artificielle (CIA) - AI ExpoTech</p>
+            <p class="footer-links">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loader"></div>
+        <p id="loadingMessage">Traitement en cours...</p>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="public-app.js"></script>
+</body>
+</html>

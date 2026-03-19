@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Gestion des participants IA Event</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="fas fa-robot" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                <h1>AI Expotech Admin</h1>
+                <p>Connectez-vous pour gérer les participants</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Nom d'utilisateur</label>
+                    <input type="text" id="username" class="form-control" placeholder="admin" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard-container">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <i class="fas fa-robot" style="font-size: 2rem; color: var(--primary-color);"></i>
+                <h2>AI Expotech - Gestion des attestations</h2>
+            </div>
+            <div class="navbar-user">
+                <span id="adminInfo" style="color: var(--text-secondary);"></span>
+                <button onclick="logout()" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </button>
+            </div>
+        </nav>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3><i class="fas fa-users"></i> Total participants</h3>
+                <div class="stat-value" id="totalParticipants">0</div>
+            </div>
+            <div class="stat-card">
+                <h3><i class="fas fa-qrcode"></i> Codes générés</h3>
+                <div class="stat-value" id="totalCodes">0</div>
+            </div>
+            <div class="stat-card">
+                <h3><i class="fas fa-check-circle"></i> Attestations générées</h3>
+                <div class="stat-value" id="totalAttestations">0</div>
+            </div>
+        </div>
+
+        <!-- Add Participant Form -->
+        <div class="add-participant-section">
+            <div class="form-title">
+                <i class="fas fa-user-plus"></i>
+                <h3>Ajouter un nouveau participant</h3>
+            </div>
+            <form id="addParticipantForm">
+                <div class="form-group">
+                    <label for="participantName">Nom complet <span style="color: var(--danger-color);">*</span></label>
+                    <input type="text" id="participantName" class="form-control" placeholder="Jean Dupont" required minlength="2">
+                </div>
+                <div class="form-group">
+                    <label for="participantEmail">Email (optionnel)</label>
+                    <input type="email" id="participantEmail" class="form-control" placeholder="jean@example.com">
+                </div>
+                <button type="submit" class="btn btn-primary" id="submitParticipant">
+                    <i class="fas fa-plus-circle"></i> Ajouter le participant
+                </button>
+            </form>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-section">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" class="search-input" placeholder="Rechercher par nom, email ou code...">
+            </div>
+            <div class="filter-controls">
+                <select id="itemsPerPage" class="form-control">
+                    <option value="10">10 par page</option>
+                    <option value="25" selected>25 par page</option>
+                    <option value="50">50 par page</option>
+                    <option value="100">100 par page</option>
+                </select>
+                <select id="attestationFilter" class="form-control">
+                    <option value="all">Tous</option>
+                    <option value="generated">Attestation générée</option>
+                    <option value="not_generated">Attestation non générée</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Participants Table -->
+        <div class="table-container">
+            <table id="participantsTable">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Code secret</th>
+                        <th>Attestation</th>
+                        <th>Date d'inscription</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 2rem;">
+                            <div class="loader"></div>
+                            <p>Chargement des participants...</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div id="pagination" class="pagination"></div>
+    </div>
+
+    <!-- Code Modal -->
+    <div id="codeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Code secret généré</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <p>Le code secret pour ce participant est :</p>
+            <div class="code-display">
+                <span id="generatedCode" class="code-text"></span>
+            </div>
+            <div class="code-actions">
+                <button onclick="copyCode()" class="btn btn-success">
+                    <i class="fas fa-copy"></i> Copier
+                </button>
+                <button onclick="closeModal()" class="btn btn-primary">Fermer</button>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 1rem;">
+                Ce code permettra au participant de télécharger son attestation.
+            </p>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3 id="confirmTitle">Confirmation</h3>
+                <button class="modal-close" onclick="closeConfirmModal()">&times;</button>
+            </div>
+            <p id="confirmMessage">Êtes-vous sûr de vouloir effectuer cette action ?</p>
+            <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
+                <button onclick="closeConfirmModal()" class="btn" style="background: var(--border-color);">Annuler</button>
+                <button id="confirmActionBtn" class="btn btn-danger">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
